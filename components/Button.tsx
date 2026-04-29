@@ -1,6 +1,7 @@
 import React from "react";
 import { Platform, Pressable, Text, StyleSheet } from "react-native";
 import { colors, radius, spacing } from "../design-system/tokens";
+import { useTheme } from "../theme/useTheme";
 
 type ButtonProps = {
   label: string;
@@ -9,26 +10,47 @@ type ButtonProps = {
 };
 
 export function Button({ label, onPress, variant = "primary" }: ButtonProps) {
+  // 🔥 Get theme
+  const { isDark } = useTheme();
+  const theme = isDark ? colors.dark : colors.light;
+
+  // 🔥 Dynamic styles based on variant
+  const getBackground = () => {
+    if (variant === "primary") return theme.primary;
+    if (variant === "secondary") return isDark ? "#1F2937" : "#E5E7EB";
+    return "transparent"; // ghost
+  };
+
+  const getTextColor = () => {
+    if (variant === "primary") return "#FFFFFF";
+    if (variant === "secondary") return theme.text;
+    return theme.primary; // ghost
+  };
+
+  const getBorder = () => {
+    if (variant === "ghost") return theme.primary;
+    return "transparent";
+  };
+
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [
         styles.base,
-        styles[variant],
+
+        {
+          backgroundColor: getBackground(),
+          borderColor: getBorder(),
+        },
+
+        variant === "ghost" && styles.ghost,
         Platform.OS === "ios" && styles.ios,
         Platform.OS === "android" && styles.android,
+
         pressed && styles.pressed,
       ]}
     >
-      <Text
-        style={[
-          styles.label,
-          variant === "ghost" && { color: colors.text },
-          variant === "secondary" && { color: colors.primary },
-        ]}
-      >
-        {label}
-      </Text>
+      <Text style={[styles.label, { color: getTextColor() }]}>{label}</Text>
     </Pressable>
   );
 }
@@ -39,20 +61,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     borderRadius: radius.md,
     marginBottom: spacing.md,
-  },
-
-  primary: {
-    backgroundColor: colors.primary,
-  },
-
-  secondary: {
-    backgroundColor: "#E7E7FF",
+    borderWidth: 1,
   },
 
   ghost: {
     backgroundColor: "transparent",
-    borderWidth: 1,
-    borderColor: colors.primary,
   },
 
   ios: {
@@ -71,7 +84,6 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    color: "#fff",
     textAlign: "center",
     fontSize: 16,
     fontWeight: "600",

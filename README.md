@@ -1,30 +1,70 @@
 # Cross-Platform Design System Showcase
 
-This project was created for Module 4.8 to demonstrate a reusable design system that works across iOS, Android, and the web using Expo and React Native.
+A polished cross-platform design system built with Expo, React Native, TypeScript, and Expo Router.
 
-The goal was to build components that feel consistent, while still adapting to each platform’s behavior and layout patterns.
+This project showcases reusable UI components, shared design tokens, dark mode support, responsive layouts, and documentation-style pages that work across web and mobile.
+
+---
+
+## Overview
+
+The goal of this project is to demonstrate how a small design system can create consistent interfaces across multiple platforms.
+
+The app includes a home page, component library page, and documentation page. Each screen is built using reusable components and shared styling rules.
 
 ---
 
 ## Features
 
-- Reusable component library (Button, Input, Card, Modal, NavBar, Avatar)
-- Platform-adaptive modal
-  - slide-in on mobile
-  - overlay on web
-- Responsive layout on both web and iOS
-- Dark mode toggle using a shared theme hook
-- Design system tokens displayed (colors, spacing, radius)
-- Documentation screen showcasing components in use
-- Bottom navigation with working screen routing
+- Reusable component library
+
+  - Button
+  - Card
+  - Input
+  - Modal
+  - NavBar
+  - Avatar
+  - Tag
+
+- Cross-platform support
+
+  - Web
+  - iOS
+  - Android
+
+- Dark mode support using AsyncStorage
+
+- Shared design tokens
+
+  - Colors
+  - Spacing
+  - Border radius
+
+- Documentation-style component examples
+
+- Floating bottom navigation
+
+- Platform-aware modal behavior
+
+---
+
+## Tech Stack
+
+- React Native
+- Expo
+- Expo Router
+- TypeScript
+- AsyncStorage
+- StyleSheet API
 
 ---
 
 ## Project Structure
 
+```txt
 app/
-├─ \_layout.tsx
-├─ index.tsx (Home)
+├─ _layout.tsx
+├─ index.tsx
 ├─ components.tsx
 └─ documentation.tsx
 
@@ -34,52 +74,30 @@ components/
 ├─ Card.tsx
 ├─ Input.tsx
 ├─ Modal.tsx
-└─ NavBar.tsx
+├─ NavBar.tsx
+└─ Tag.tsx
 
 design-system/
-└─ tokens.js
+└─ tokens.ts
 
----
+theme/
+└─ useTheme.ts
+```
 
-## How to Run
+How to Run
 
-1. Install packages:
-   npm install
+Install dependencies:
 
-2. Start the project:
-   npx expo start
+npm install
 
-3. Open:
+Start the project:
 
-- **iOS simulator**
-- **Web browser** (`w`)
-- or scan the QR code
+npx expo start
 
----
+Run on web:
 
-## Assignment Requirements Completed
+w
 
-- [x] Minimum 5 components
-- [x] Platform-aware modal
-- [x] Web + mobile responsive UI
-- [x] Dark mode implementation
-- [x] Design system documentation screen
-- [x] Avatar component included
-- [x] Bottom navigation working
+Run on iOS simulator:
 
----
-
-## Technologies Used
-
-- React Native
-- Expo
-- expo-router
-- TypeScript
-- CSS-in-JS (StyleSheet API)
-
----
-
-## Notes
-
-This project focuses on structure, reusability, and visual consistency—not complex app logic.  
-The goal was to show that one design system can support multiple platforms without breaking the native experience.
+i

@@ -1,25 +1,48 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
-import { colors, radius, spacing } from "../design-system/tokens";
+import { View, StyleSheet, Platform } from "react-native";
 
 type CardProps = {
   children: React.ReactNode;
+  dark?: boolean;
 };
 
-export function Card({ children }: CardProps) {
-  return <View style={styles.container}>{children}</View>;
+export function Card({ children, dark = false }: CardProps) {
+  return (
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: dark ? "#111827" : "#FFFFFF",
+          borderColor: dark ? "#253149" : "#E5E7EB",
+        },
+      ]}
+    >
+      {children}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.background,
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-    shadowColor: "#000",
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
-    marginVertical: spacing.md,
+  card: {
+    flex: 1,
+    minHeight: 150,
+    padding: 22,
+    borderRadius: 18,
+    borderWidth: 1,
+
+    ...Platform.select({
+      web: {
+        boxShadow: "0px 18px 35px rgba(0,0,0,0.08)",
+      },
+      ios: {
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowRadius: 12,
+        shadowOffset: { width: 0, height: 6 },
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
 });

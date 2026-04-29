@@ -7,34 +7,45 @@ export function useTheme() {
   const [isDark, setIsDark] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
+  // Load saved theme when the app starts
   useEffect(() => {
-    const loadTheme = async () => {
+    async function loadTheme() {
       try {
-        const saved = await AsyncStorage.getItem(THEME_KEY);
-        if (saved === "dark") {
+        const savedTheme = await AsyncStorage.getItem(THEME_KEY);
+
+        if (savedTheme === "dark") {
           setIsDark(true);
-        } else if (saved === "light") {
+        }
+
+        if (savedTheme === "light") {
           setIsDark(false);
         }
-      } catch (e) {
-        console.log("Failed to load theme", e);
+      } catch (error) {
+        console.log("Failed to load theme:", error);
       } finally {
         setLoaded(true);
       }
-    };
+    }
 
     loadTheme();
   }, []);
 
-  const toggleTheme = async () => {
+  // Toggle between light and dark mode
+  async function toggleTheme() {
     try {
-      const next = !isDark;
-      setIsDark(next);
-      await AsyncStorage.setItem(THEME_KEY, next ? "dark" : "light");
-    } catch (e) {
-      console.log("Failed to save theme", e);
-    }
-  };
+      const nextTheme = !isDark;
 
-  return { isDark, toggleTheme, loaded };
+      setIsDark(nextTheme);
+
+      await AsyncStorage.setItem(THEME_KEY, nextTheme ? "dark" : "light");
+    } catch (error) {
+      console.log("Failed to save theme:", error);
+    }
+  }
+
+  return {
+    isDark,
+    toggleTheme,
+    loaded,
+  };
 }

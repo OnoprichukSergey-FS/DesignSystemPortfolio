@@ -1,6 +1,8 @@
 import React from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
+import { colors, radius, spacing } from "../design-system/tokens";
 
+// Props for reusable input component
 type InputProps = {
   label: string;
   value: string;
@@ -16,57 +18,73 @@ export default function Input({
   error,
   dark,
 }: InputProps) {
+  // Determine if error state should be shown
   const isError = Boolean(error);
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.label, dark && { color: "#fff" }]}>{label}</Text>
+      {/* ===== LABEL ===== */}
+      <Text style={[styles.label, { color: dark ? "#E5E7EB" : "#374151" }]}>
+        {label}
+      </Text>
 
+      {/* ===== INPUT FIELD ===== */}
       <TextInput
         value={value}
         onChangeText={onChangeText}
         placeholder="Enter value"
-        placeholderTextColor={dark ? "#aaa" : "#999"}
+        placeholderTextColor={dark ? "#9CA3AF" : "#9CA3AF"}
         style={[
           styles.input,
-          dark && {
-            backgroundColor: "#222",
-            color: "#fff",
-            borderColor: "#555",
-          },
-          isError && {
-            borderColor: "#FF4D4F",
+          {
+            backgroundColor: dark ? "#111827" : "#FFFFFF",
+            color: dark ? "#FFFFFF" : "#111827",
+            borderColor: isError ? "#EF4444" : dark ? "#374151" : "#E5E7EB",
           },
         ]}
       />
 
+      {/* ===== ERROR MESSAGE ===== */}
       {isError && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  // Container spacing
   container: {
     width: "100%",
-    marginTop: 12,
+    marginTop: spacing.md,
   },
+
+  // Label text
   label: {
-    fontSize: 14,
+    fontSize: 13,
+    fontWeight: "600",
     marginBottom: 6,
-    color: "#555",
   },
+
+  // Input field styling
   input: {
-    height: 44,
+    height: 46,
     borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    backgroundColor: "#fff",
-    color: "#000",
+    borderRadius: radius.md,
+    paddingHorizontal: spacing.md,
+    fontSize: 15,
+
+    // Slight depth for web/native
+    ...Platform.select({
+      web: {
+        boxShadow: "0px 4px 10px rgba(0,0,0,0.04)",
+      },
+    }),
   },
+
+  // Error message text
   errorText: {
-    color: "#FF4D4F",
-    marginTop: 4,
+    color: "#EF4444",
+    marginTop: 6,
     fontSize: 12,
+    fontWeight: "500",
   },
 });
