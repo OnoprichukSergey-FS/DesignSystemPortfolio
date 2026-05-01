@@ -7,6 +7,7 @@ import {
   Platform,
   TextInput,
   Pressable,
+  useWindowDimensions,
 } from "react-native";
 
 import { Button } from "../components/Button";
@@ -22,6 +23,16 @@ import { useTheme } from "../theme/useTheme";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 
+const sections = [
+  "Overview",
+  "Playground",
+  "Buttons",
+  "Cards",
+  "Inputs",
+  "Avatar",
+  "Modal",
+];
+
 export default function ComponentsScreen() {
   const [activeSection, setActiveSection] = useState("Overview");
 
@@ -36,6 +47,9 @@ export default function ComponentsScreen() {
   const [copied, setCopied] = useState(false);
 
   const { isDark, toggleTheme } = useTheme();
+  const { width } = useWindowDimensions();
+
+  const isMobile = width < 768;
 
   const liveCode = `<Button
   label="${playgroundLabel || "Preview Button"}"
@@ -66,23 +80,65 @@ export default function ComponentsScreen() {
         { backgroundColor: isDark ? "#070A12" : "#F6F7FB" },
       ]}
     >
-      <View style={styles.layout}>
-        {/* ===== SIDEBAR ===== */}
-        <Sidebar
-          activeSection={activeSection}
-          setActiveSection={setActiveSection}
-        />
+      <View
+        style={[
+          styles.layout,
+          {
+            flexDirection: isMobile ? "column" : "row",
+            paddingHorizontal: isMobile ? 16 : 24,
+            paddingTop: isMobile ? 28 : 50,
+          },
+        ]}
+      >
+        {!isMobile && (
+          <Sidebar
+            activeSection={activeSection}
+            setActiveSection={setActiveSection}
+          />
+        )}
 
-        {/* ===== MAIN CONTENT ===== */}
+        {isMobile && (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.mobileTabs}
+          >
+            {sections.map((section) => (
+              <Pressable
+                key={section}
+                onPress={() => setActiveSection(section)}
+                style={[
+                  styles.mobileTab,
+                  activeSection === section && styles.mobileTabActive,
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.mobileTabText,
+                    activeSection === section && styles.mobileTabTextActive,
+                  ]}
+                >
+                  {section}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
+        )}
+
         <ScrollView
-          contentContainerStyle={styles.content}
+          contentContainerStyle={[
+            styles.content,
+            {
+              paddingBottom: isMobile ? 130 : 40,
+            },
+          ]}
           showsVerticalScrollIndicator={false}
         >
-          {/* ===== HERO ===== */}
           <View
             style={[
               styles.hero,
               {
+                padding: isMobile ? 24 : 30,
                 backgroundColor: isDark ? "#090E1A" : "#F9FAFB",
                 borderColor: isDark ? "#1E293B" : "#EEF0F4",
               },
@@ -91,7 +147,14 @@ export default function ComponentsScreen() {
             <Text style={styles.eyebrow}>NovaUI Design System</Text>
 
             <Text
-              style={[styles.title, { color: isDark ? "#FFFFFF" : "#111827" }]}
+              style={[
+                styles.title,
+                {
+                  color: isDark ? "#FFFFFF" : "#111827",
+                  fontSize: isMobile ? 34 : 42,
+                  lineHeight: isMobile ? 40 : 50,
+                },
+              ]}
             >
               A polished UI component playground with live JSX previews.
             </Text>
@@ -107,7 +170,6 @@ export default function ComponentsScreen() {
             </Text>
           </View>
 
-          {/* ===== OVERVIEW ===== */}
           {activeSection === "Overview" && (
             <Section
               title="Why This Exists"
@@ -144,7 +206,6 @@ export default function ComponentsScreen() {
             </Section>
           )}
 
-          {/* ===== PLAYGROUND ===== */}
           {activeSection === "Playground" && (
             <Section
               title="Live Component Playground"
@@ -255,7 +316,6 @@ export default function ComponentsScreen() {
             </Section>
           )}
 
-          {/* ===== BUTTONS ===== */}
           {activeSection === "Buttons" && (
             <Section
               title="Buttons"
@@ -305,7 +365,6 @@ export default function ComponentsScreen() {
             </Section>
           )}
 
-          {/* ===== CARDS ===== */}
           {activeSection === "Cards" && (
             <Section
               title="Cards"
@@ -400,7 +459,6 @@ export default function ComponentsScreen() {
             </Section>
           )}
 
-          {/* ===== INPUTS ===== */}
           {activeSection === "Inputs" && (
             <Section
               title="Inputs"
@@ -441,7 +499,6 @@ export default function ComponentsScreen() {
             </Section>
           )}
 
-          {/* ===== AVATAR ===== */}
           {activeSection === "Avatar" && (
             <Section
               title="Avatar"
@@ -472,7 +529,6 @@ export default function ComponentsScreen() {
             </Section>
           )}
 
-          {/* ===== MODAL ===== */}
           {activeSection === "Modal" && (
             <Section
               title="Modal"
@@ -568,68 +624,78 @@ function CodeBlock({
         <Text style={styles.copyButtonText}>{copied ? "Copied" : "Copy"}</Text>
       </Pressable>
 
-      <Text style={styles.codeBlock}>{code}</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <Text style={styles.codeBlock}>{code}</Text>
+      </ScrollView>
     </View>
   );
 }
 
 function SimpleCode({ code }: { code: string }) {
-  return <Text style={styles.simpleCodeBlock}>{code}</Text>;
+  return (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <Text style={styles.simpleCodeBlock}>{code}</Text>
+    </ScrollView>
+  );
 }
 
 function PropsTable({ rows, isDark }: { rows: string[][]; isDark: boolean }) {
   return (
-    <View
-      style={[
-        styles.propsTable,
-        { borderColor: isDark ? "#253149" : "#E5E7EB" },
-      ]}
-    >
+    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <View
         style={[
-          styles.propsRow,
-          { backgroundColor: isDark ? "#0B1220" : "#F9FAFB" },
+          styles.propsTable,
+          { borderColor: isDark ? "#253149" : "#E5E7EB" },
         ]}
       >
-        <Text
-          style={[styles.propsHeader, { color: isDark ? "#FFF" : "#111827" }]}
+        <View
+          style={[
+            styles.propsRow,
+            { backgroundColor: isDark ? "#0B1220" : "#F9FAFB" },
+          ]}
         >
-          Prop
-        </Text>
-        <Text
-          style={[styles.propsHeader, { color: isDark ? "#FFF" : "#111827" }]}
-        >
-          Type
-        </Text>
-        <Text
-          style={[styles.propsHeader, { color: isDark ? "#FFF" : "#111827" }]}
-        >
-          Description
-        </Text>
-      </View>
-
-      {rows.map((row) => (
-        <View key={row[0]} style={styles.propsRow}>
           <Text
-            style={[
-              styles.propsCell,
-              { color: isDark ? "#CBD5E1" : "#4B5563" },
-            ]}
+            style={[styles.propsHeader, { color: isDark ? "#FFF" : "#111827" }]}
           >
-            {row[0]}
+            Prop
           </Text>
-          <Text style={[styles.propsCell, { color: "#8B7CFF" }]}>{row[1]}</Text>
           <Text
-            style={[
-              styles.propsCell,
-              { color: isDark ? "#CBD5E1" : "#4B5563" },
-            ]}
+            style={[styles.propsHeader, { color: isDark ? "#FFF" : "#111827" }]}
           >
-            {row[2]}
+            Type
+          </Text>
+          <Text
+            style={[styles.propsHeader, { color: isDark ? "#FFF" : "#111827" }]}
+          >
+            Description
           </Text>
         </View>
-      ))}
-    </View>
+
+        {rows.map((row) => (
+          <View key={row[0]} style={styles.propsRow}>
+            <Text
+              style={[
+                styles.propsCell,
+                { color: isDark ? "#CBD5E1" : "#4B5563" },
+              ]}
+            >
+              {row[0]}
+            </Text>
+            <Text style={[styles.propsCell, { color: "#8B7CFF" }]}>
+              {row[1]}
+            </Text>
+            <Text
+              style={[
+                styles.propsCell,
+                { color: isDark ? "#CBD5E1" : "#4B5563" },
+              ]}
+            >
+              {row[2]}
+            </Text>
+          </View>
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 
@@ -643,25 +709,49 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: 1300,
     alignSelf: "center",
-    flexDirection: Platform.OS === "web" ? "row" : "column",
     gap: 24,
-    paddingHorizontal: 24,
-    paddingTop: Platform.OS === "web" ? 50 : 70,
     paddingBottom: 110,
   },
 
   content: {
     flexGrow: 1,
-    flex: 1,
     gap: 24,
-    paddingBottom: 40,
+  },
+
+  mobileTabs: {
+    gap: 10,
+    paddingBottom: 4,
+  },
+
+  mobileTab: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 999,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+  },
+
+  mobileTabActive: {
+    backgroundColor: "#EDE9FE",
+    borderColor: "#C4B5FD",
+  },
+
+  mobileTabText: {
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#4B5563",
+  },
+
+  mobileTabTextActive: {
+    color: "#8B7CFF",
   },
 
   hero: {
-    padding: 30,
     borderRadius: 22,
     borderWidth: 1,
     alignItems: "center",
+    width: "100%",
   },
 
   eyebrow: {
@@ -670,11 +760,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     letterSpacing: 1.4,
     textTransform: "uppercase",
+    textAlign: "center",
   },
 
   title: {
-    fontSize: Platform.OS === "web" ? 42 : 30,
-    lineHeight: Platform.OS === "web" ? 50 : 38,
     fontWeight: "900",
     textAlign: "center",
     maxWidth: 850,
@@ -692,6 +781,7 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     padding: 24,
     gap: 14,
+    width: "100%",
   },
 
   sectionTitle: {
@@ -707,6 +797,7 @@ const styles = StyleSheet.create({
   bodyText: {
     fontSize: 14,
     lineHeight: 22,
+    marginTop: 8,
   },
 
   row: {
@@ -725,9 +816,11 @@ const styles = StyleSheet.create({
   cardGrid: {
     flexDirection: Platform.OS === "web" ? "row" : "column",
     gap: 16,
+    flexWrap: "wrap",
   },
 
   inputWrap: {
+    width: "100%",
     maxWidth: 500,
   },
 
@@ -783,6 +876,7 @@ const styles = StyleSheet.create({
   codeWrapper: {
     position: "relative",
     marginTop: 12,
+    width: "100%",
   },
 
   copyButton: {
@@ -803,6 +897,7 @@ const styles = StyleSheet.create({
   },
 
   codeBlock: {
+    minWidth: 320,
     padding: 14,
     paddingTop: 42,
     borderRadius: 10,
@@ -814,6 +909,7 @@ const styles = StyleSheet.create({
   },
 
   simpleCodeBlock: {
+    minWidth: 280,
     marginTop: 12,
     padding: 14,
     borderRadius: 10,
@@ -825,6 +921,7 @@ const styles = StyleSheet.create({
   },
 
   propsTable: {
+    minWidth: 620,
     borderWidth: 1,
     borderRadius: 14,
     overflow: "hidden",
@@ -839,13 +936,13 @@ const styles = StyleSheet.create({
   },
 
   propsHeader: {
-    flex: 1,
+    width: 180,
     fontSize: 13,
     fontWeight: "900",
   },
 
   propsCell: {
-    flex: 1,
+    width: 180,
     fontSize: 13,
     lineHeight: 19,
   },
