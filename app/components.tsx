@@ -707,25 +707,28 @@ const styles = StyleSheet.create({
   layout: {
     flex: 1,
     width: "100%",
-    maxWidth: 1300,
+    maxWidth: 1200,
     alignSelf: "center",
-    gap: 24,
-    paddingBottom: 110,
+    gap: 20,
+    paddingBottom: 120,
   },
 
   content: {
     flexGrow: 1,
-    gap: 24,
+    gap: 20,
   },
 
+  /* ---------------- MOBILE TABS ---------------- */
+
   mobileTabs: {
-    gap: 10,
-    paddingBottom: 4,
+    gap: 8,
+    paddingBottom: 6,
+    paddingHorizontal: 4,
   },
 
   mobileTab: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
     borderRadius: 999,
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
@@ -738,7 +741,7 @@ const styles = StyleSheet.create({
   },
 
   mobileTabText: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "800",
     color: "#4B5563",
   },
@@ -747,8 +750,10 @@ const styles = StyleSheet.create({
     color: "#8B7CFF",
   },
 
+  /* ---------------- HERO ---------------- */
+
   hero: {
-    borderRadius: 22,
+    borderRadius: 20,
     borderWidth: 1,
     alignItems: "center",
     width: "100%",
@@ -757,215 +762,226 @@ const styles = StyleSheet.create({
   eyebrow: {
     color: "#8B7CFF",
     fontWeight: "900",
-    marginBottom: 12,
-    letterSpacing: 1.4,
+    marginBottom: 10,
+    letterSpacing: 1.2,
     textTransform: "uppercase",
     textAlign: "center",
+    fontSize: 12,
   },
 
   title: {
     fontWeight: "900",
     textAlign: "center",
-    maxWidth: 850,
+    maxWidth: 720,
+    fontSize: 30, // 🔥 FIXED mobile scaling
+    lineHeight: 36,
   },
 
   subtitle: {
-    marginTop: 16,
+    marginTop: 14,
     textAlign: "center",
-    lineHeight: 22,
-    maxWidth: 760,
+    lineHeight: 21,
+    maxWidth: 640,
+    fontSize: 14,
   },
+
+  /* ---------------- SECTIONS ---------------- */
 
   section: {
     borderWidth: 1,
-    borderRadius: 22,
-    padding: 24,
+    borderRadius: 20,
+    padding: 18,
     gap: 14,
     width: "100%",
   },
 
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 20, // 🔥 smaller for mobile
     fontWeight: "900",
   },
 
   sectionDescription: {
-    fontSize: 14,
-    lineHeight: 22,
+    fontSize: 13,
+    lineHeight: 20,
   },
 
   bodyText: {
-    fontSize: 14,
-    lineHeight: 22,
-    marginTop: 8,
+    fontSize: 13,
+    lineHeight: 20,
+    marginTop: 6,
   },
+
+  /* ---------------- ROWS ---------------- */
 
   row: {
     flexDirection: "row",
-    gap: 12,
+    gap: 10,
     flexWrap: "wrap",
   },
 
   tagRow: {
     flexDirection: "row",
-    gap: 8,
-    marginBottom: 10,
+    gap: 6,
+    marginBottom: 8,
     flexWrap: "wrap",
   },
 
   cardGrid: {
-    flexDirection: Platform.OS === "web" ? "row" : "column",
-    gap: 16,
-    flexWrap: "wrap",
+    flexDirection: "column", // 🔥 FORCE STACK ON MOBILE
+    gap: 14,
   },
 
   inputWrap: {
     width: "100%",
-    maxWidth: 500,
+    maxWidth: 100,
   },
 
   avatarRow: {
     flexDirection: "row",
-    gap: 20,
+    gap: 16,
     flexWrap: "wrap",
   },
 
+  /* ---------------- PREVIEW ---------------- */
+
   previewBox: {
     borderWidth: 1,
-    borderRadius: 16,
-    padding: 18,
+    borderRadius: 14,
+    padding: 16,
     marginTop: 4,
-    marginBottom: 4,
   },
 
   previewTitle: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "800",
-    marginBottom: 14,
+    marginBottom: 12,
   },
 
   playgroundLabel: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "700",
-    marginBottom: 6,
+    marginBottom: 5,
   },
 
   playgroundInput: {
     width: "100%",
-    maxWidth: 500,
     borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    fontSize: 15,
-    marginBottom: 14,
+    borderRadius: 10,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    fontSize: 14,
+    marginBottom: 12,
   },
 
   successText: {
     color: "#8B7CFF",
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "800",
-    marginTop: 10,
-  },
-
-  stateText: {
-    fontSize: 12,
     marginTop: 8,
   },
 
+  stateText: {
+    fontSize: 11,
+    marginTop: 6,
+  },
+
+  /* ---------------- CODE ---------------- */
+
   codeWrapper: {
     position: "relative",
-    marginTop: 12,
+    marginTop: 10,
     width: "100%",
   },
 
   copyButton: {
     position: "absolute",
-    right: 10,
-    top: 10,
+    right: 8,
+    top: 8,
     zIndex: 10,
     backgroundColor: "#1E293B",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    borderRadius: 6,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
   },
 
   copyButtonText: {
     color: "#E5E7EB",
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "700",
   },
 
   codeBlock: {
-    minWidth: 320,
-    padding: 14,
-    paddingTop: 42,
+    minWidth: 260,
+    padding: 12,
+    paddingTop: 36,
     borderRadius: 10,
     backgroundColor: "#020617",
     color: "#E5E7EB",
-    fontFamily: Platform.OS === "web" ? "monospace" : undefined,
-    fontSize: 13,
-    lineHeight: 20,
+    fontSize: 12,
+    lineHeight: 18,
   },
 
   simpleCodeBlock: {
-    minWidth: 280,
-    marginTop: 12,
-    padding: 14,
+    minWidth: 240,
+    marginTop: 10,
+    padding: 12,
     borderRadius: 10,
     backgroundColor: "#020617",
     color: "#E5E7EB",
-    fontFamily: Platform.OS === "web" ? "monospace" : undefined,
-    fontSize: 13,
-    lineHeight: 20,
+    fontSize: 12,
+    lineHeight: 18,
   },
 
+  /* ---------------- TABLE ---------------- */
+
   propsTable: {
-    minWidth: 620,
+    minWidth: 500,
     borderWidth: 1,
-    borderRadius: 14,
+    borderRadius: 12,
     overflow: "hidden",
     marginTop: 8,
   },
 
   propsRow: {
     flexDirection: "row",
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    gap: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    gap: 10,
   },
 
   propsHeader: {
-    width: 180,
-    fontSize: 13,
+    width: 150,
+    fontSize: 12,
     fontWeight: "900",
   },
 
   propsCell: {
-    width: 180,
-    fontSize: 13,
-    lineHeight: 19,
+    width: 150,
+    fontSize: 12,
+    lineHeight: 18,
   },
+
+  /* ---------------- CARD ---------------- */
 
   cardLabel: {
     color: "#8B7CFF",
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: "800",
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 6,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 5,
     alignSelf: "flex-start",
-    marginBottom: 8,
+    marginBottom: 6,
   },
 
   cardTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "800",
     marginBottom: 4,
   },
 
   cardText: {
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 18,
   },
 });

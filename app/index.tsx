@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Platform, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  ScrollView,
+  useWindowDimensions,
+} from "react-native";
 import { router } from "expo-router";
 
 import { Button } from "../components/Button";
@@ -12,6 +19,10 @@ import { useTheme } from "../theme/useTheme";
 export default function HomeScreen() {
   const [username, setUsername] = useState("Sergey");
   const { isDark, toggleTheme } = useTheme();
+  const { width } = useWindowDimensions();
+
+  const isMobile = width < 768;
+  const isSmallMobile = width < 430;
 
   return (
     <View
@@ -20,12 +31,29 @@ export default function HomeScreen() {
         { backgroundColor: isDark ? "#070A12" : "#F6F7FB" },
       ]}
     >
-      <ScrollView contentContainerStyle={styles.content}>
-        {/* ===== HERO ===== */}
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          {
+            paddingHorizontal: isMobile ? 18 : 24,
+            paddingTop: isMobile ? 44 : 80,
+          },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.hero}>
           <Text style={styles.eyebrow}>NovaUI</Text>
 
-          <Text style={[styles.title, { color: isDark ? "#FFF" : "#111" }]}>
+          <Text
+            style={[
+              styles.title,
+              {
+                color: isDark ? "#FFF" : "#111827",
+                fontSize: isSmallMobile ? 34 : isMobile ? 38 : 42,
+                lineHeight: isSmallMobile ? 40 : isMobile ? 44 : 50,
+              },
+            ]}
+          >
             Build consistent, scalable interfaces with reusable UI components.
           </Text>
 
@@ -35,7 +63,12 @@ export default function HomeScreen() {
             A modern design system playground with live previews.
           </Text>
 
-          <View style={styles.actions}>
+          <View
+            style={[
+              styles.actions,
+              { flexDirection: isMobile ? "column" : "row" },
+            ]}
+          >
             <Button
               label="Explore Components"
               variant="primary"
@@ -50,8 +83,9 @@ export default function HomeScreen() {
           </View>
         </View>
 
-        {/* ===== FEATURES ===== */}
-        <View style={styles.grid}>
+        <View
+          style={[styles.grid, { flexDirection: isMobile ? "column" : "row" }]}
+        >
           <FeatureCard
             title="Reusable Components"
             text="Buttons, cards, inputs, avatars, modals."
@@ -69,14 +103,15 @@ export default function HomeScreen() {
           />
         </View>
 
-        {/* ===== COMPONENT PREVIEW ===== */}
         <Text
-          style={[styles.sectionTitle, { color: isDark ? "#FFF" : "#111" }]}
+          style={[styles.sectionTitle, { color: isDark ? "#FFF" : "#111827" }]}
         >
           Component Preview
         </Text>
 
-        <View style={styles.grid}>
+        <View
+          style={[styles.grid, { flexDirection: isMobile ? "column" : "row" }]}
+        >
           <Card dark={isDark}>
             <Text style={styles.cardLabel}>Component</Text>
             <Text style={[styles.cardTitle, textColor(isDark)]}>Button</Text>
@@ -102,9 +137,8 @@ export default function HomeScreen() {
           </Card>
         </View>
 
-        {/* ===== INPUT ===== */}
         <Text
-          style={[styles.sectionTitle, { color: isDark ? "#FFF" : "#111" }]}
+          style={[styles.sectionTitle, { color: isDark ? "#FFF" : "#111827" }]}
         >
           Interactive Example
         </Text>
@@ -123,37 +157,32 @@ export default function HomeScreen() {
   );
 }
 
-/* ===== FEATURE CARD ===== */
 function FeatureCard({ title, text, isDark }: any) {
   return (
     <Card dark={isDark}>
       <Text style={styles.cardLabel}>Feature</Text>
-
       <Text style={[styles.cardTitle, textColor(isDark)]}>{title}</Text>
-
       <Text style={[styles.cardText, subTextColor(isDark)]}>{text}</Text>
     </Card>
   );
 }
 
-/* ===== COLORS ===== */
 const textColor = (dark: boolean) => ({
-  color: dark ? "#FFF" : "#111",
+  color: dark ? "#FFF" : "#111827",
 });
 
 const subTextColor = (dark: boolean) => ({
   color: dark ? "#CBD5E1" : "#666",
 });
 
-/* ===== STYLES ===== */
 const styles = StyleSheet.create({
-  screen: { flex: 1 },
+  screen: {
+    flex: 1,
+  },
 
   content: {
-    padding: 24,
-    paddingTop: 80,
-    paddingBottom: 120,
-    gap: 24,
+    paddingBottom: 130,
+    gap: 22,
   },
 
   hero: {
@@ -165,40 +194,43 @@ const styles = StyleSheet.create({
     color: "#8B7CFF",
     fontWeight: "900",
     letterSpacing: 2,
+    textTransform: "uppercase",
   },
 
   title: {
-    fontSize: 42,
     fontWeight: "900",
     textAlign: "center",
+    maxWidth: 900,
   },
 
   subtitle: {
-    fontSize: 16,
+    fontSize: 15,
+    lineHeight: 22,
     textAlign: "center",
+    maxWidth: 620,
   },
 
   actions: {
-    flexDirection: "row",
     gap: 12,
     marginTop: 10,
+    alignItems: "center",
   },
 
   grid: {
-    flexDirection: Platform.OS === "web" ? "row" : "column",
     gap: 16,
   },
 
   sectionTitle: {
     fontSize: 22,
     fontWeight: "900",
-    marginTop: 10,
+    marginTop: 6,
   },
 
   cardLabel: {
     color: "#8B7CFF",
     fontWeight: "900",
     fontSize: 12,
+    textTransform: "uppercase",
   },
 
   cardTitle: {
@@ -209,6 +241,7 @@ const styles = StyleSheet.create({
 
   cardText: {
     fontSize: 14,
+    lineHeight: 20,
     marginTop: 5,
   },
 });
